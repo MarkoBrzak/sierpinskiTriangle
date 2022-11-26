@@ -1,12 +1,21 @@
 import tkinter as tk
 from tkinter import *
 from tkinter import ttk
+import tkinter.messagebox
 
-def get_current_value():
-    return current_value.get()
+def ex():
+    answer = tk.messagebox.askquestion('Exit', 'Do you wish to exit the program?')
+    if answer == 'yes':
+        exit()
+    else:
+        return
 
-def slider_changed(event):
-    draw_sierpinski(get_current_value())
+def colorChange():
+    print(str(colorEntry.get()))
+    triangleColor = str(colorEntry.get())
+
+def sliderChange(event):
+    draw_sierpinski(currentValue.get())
     
 
 def midpoint(p1, p2):
@@ -18,6 +27,7 @@ def midpoint(p1, p2):
 def sierpinski(A, B, C, depth):
     if depth == 0:
         return
+
     MAB = midpoint(A, B)
     MAC = midpoint(A, C)
     MBC = midpoint(B, C)
@@ -28,32 +38,32 @@ def sierpinski(A, B, C, depth):
     sierpinski(MAC, MBC, C, depth-1)
 
 
+
 def draw_sierpinski(depth):
     l = 300
 
     A, B, C = (0, 275), (l/2, 0), (l, 275)
 
-    graphCanvas.create_polygon([A, B, C], fill='red')
+    graphCanvas.delete('all')
+    
+    graphCanvas.create_polygon([A, B, C], fill = 'red')
     graphCanvas.pack()
 
     sierpinski(A, B, C, depth)
 
 def toggle():
     
-    if toggle_button.config('text')[-1] == 'E':
-        toggle_button.config(text='S')
-        textFrame = tk.LabelFrame(root, text='About')
-        textFrame.place(x=310, y=200)
+    #print(toggle_button.config('text'))
+    # ('text', 'text', 'Text', '', 'Srpski')
+    
+    if toggle_button.config('text')[-1] == 'English':
+        toggle_button.config(text='Srpski')
+        about.config(text='The Sierpiński triangle is a fractal with the overall shape of an equilateral triangle, subdivided recursively into smaller equilateral triangles.')
 
-        text = tk.Label(textFrame, wraplength=200, justify=LEFT, text='The Sierpiński triangle is a fractal\nwith the overall shape of an equilateral triangle, subdivided recursively into smaller equilateral triangles.')
-        text.pack()
     else:
-        toggle_button.config(text='E')
-        textFrame = tk.LabelFrame(root, text='About')
-        textFrame.place(x=310, y=200)
+        toggle_button.config(text='English')
+        about.config(text='Троугао Сјерпињског је фрактал у облику једнакостраничног троугла, подељен рекурзивно у мање једнакостраничне троуглове.')
 
-        text = tk.Label(textFrame, wraplength=190, justify=LEFT, text='Троугао Сјерпињског је фрактал са обликом једнакостраничног троугла, подељен рекурзивно у мање једнакостраничне троуглове.')
-        text.pack()
 
 
 if __name__ == "__main__":
@@ -63,25 +73,49 @@ if __name__ == "__main__":
     root.title("Sierpinski Triangle")
     root.resizable(False, False)
 
+
     graphFrame = tk.LabelFrame(root, text='Sierpinski Triangle')
     graphFrame.place(x=0, y=0)
 
-    graphCanvas = Canvas(graphFrame, width=300, height=300)
+    graphCanvas = Canvas(graphFrame, width=300, height=275)
 
-    current_value = tk.IntVar()
+    currentValue = tk.IntVar()
+    colorValue = tk.StringVar()
 
-    toggle_button = ttk.Button(text="S", width=1, command=toggle)
-    toggle_button.place(x=483, y=1)
 
-    textFrame = tk.LabelFrame(root, text='About')
-    textFrame.place(x=310, y=200)
+    aboutFrame = tk.LabelFrame(root, text='About')
+    aboutFrame.place(x=310, y=0)
 
-    text = tk.Label(textFrame, wraplength=200, justify=LEFT, text='The Sierpiński triangle is a fractal\nwith the overall shape of an equilateral triangle, subdivided recursively into smaller equilateral triangles.')
-    text.pack()
+    about = tk.Label(aboutFrame, wraplength=190, justify=LEFT, text='The Sierpiński triangle is a fractal\nwith the overall shape of an equilateral triangle, subdivided recursively into smaller equilateral triangles.')
+    about.pack()
 
     draw_sierpinski(0)
 
-    slider = Scale(root, from_=0, to=6, orient = HORIZONTAL, command=slider_changed, variable=current_value)
-    slider.place(x= 350, y =0)
+    settingsFrame = tk.LabelFrame(root, text= 'Settings', width=190, height=150)
+    settingsFrame.place(x=310, y=100)
+    
+    colorText = Message(settingsFrame, text='Color:')
+    colorText.place(x =0, y=0)
 
+    colorEntry = Entry(settingsFrame, width=10)
+    colorEntry.place(x=45, y=2)
+    
+    colorButton = ttk.Button(settingsFrame, width= 7,text='Submit', command = colorChange)
+    colorButton.place(x=105, y=-1)
+ 
+    sliderText = Message(settingsFrame, text='Depth:')
+    sliderText.place(x=0, y=45)
+
+    slider = Scale(settingsFrame, from_=0, to=6, length=100, sliderlength=20, troughcolor='gray', width=15, orient = HORIZONTAL, command=sliderChange, variable=currentValue)
+    slider.place(x=45, y=27)
+
+    languageText = Message(settingsFrame, text='Language:', width=60)
+    languageText.place(x=0, y=90)
+
+    toggle_button = ttk.Button(settingsFrame, text="Srpski", width=10, command=toggle)
+    toggle_button.place(x=70, y=90)
+
+    exitButton = ttk.Button(root, text='Exit', command = ex)
+    exitButton.place(x=370, y=265)
+    
     root.mainloop()
