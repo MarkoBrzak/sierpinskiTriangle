@@ -1,6 +1,5 @@
 import tkinter as tk
 from tkinter import *
-from tkinter import ttk
 
 def get_current_value():
     return current_value.get()
@@ -21,8 +20,8 @@ def sierpinski(A, B, C, depth):
     MAB = midpoint(A, B)
     MAC = midpoint(A, C)
     MBC = midpoint(B, C)
-    w.create_polygon([MAB, MAC, MBC], fill='white')
-    w.pack()
+    graphCanvas.create_polygon([MAB, MAC, MBC], fill='black')
+    graphCanvas.pack()
     sierpinski(A, MAB, MAC, depth-1)
     sierpinski(MAB, B, MBC, depth-1)
     sierpinski(MAC, MBC, C, depth-1)
@@ -33,10 +32,8 @@ def draw_sierpinski(depth):
 
     A, B, C = (0, 275), (l/2, 0), (l, 275)
 
-    global w 
-
-    w.create_polygon([A, B, C], outline='white')
-    w.pack()
+    graphCanvas.create_polygon([A, B, C], fill='red')
+    graphCanvas.pack()
 
     sierpinski(A, B, C, depth)
 
@@ -50,10 +47,16 @@ if __name__ == "__main__":
     root.title("Sierpinski Triangle")
     root.resizable(False, False)
 
-    frame = tk.LabelFrame(root, text='Sierpinski Triangle')
-    frame.place(x=0, y=0)
+    graphFrame = tk.LabelFrame(root, text='Sierpinski Triangle')
+    graphFrame.place(x=0, y=0)
 
-    w = Canvas(frame, width=300, height=300)
+    textFrame = tk.LabelFrame(root, text='About')
+    textFrame.place(x=310, y=50)
+
+    text = tk.Label(textFrame, wraplength=200, justify=LEFT, text='The Sierpiński triangle is a fractal\nwith the overall shape of an equilateral triangle, subdivided recursively into smaller equilateral triangles.')
+    text.pack()
+
+    graphCanvas = Canvas(graphFrame, width=300, height=300)
 
     current_value = tk.IntVar()
 
