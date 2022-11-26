@@ -3,6 +3,8 @@ from tkinter import *
 from tkinter import ttk
 import tkinter.messagebox
 
+
+
 def ex():
     answer = tk.messagebox.askquestion('Exit', 'Do you wish to exit the program?')
     if answer == 'yes':
@@ -11,11 +13,14 @@ def ex():
         return
 
 def colorChange():
-    print(str(colorEntry.get()))
+
     triangleColor = str(colorEntry.get())
+    print(triangleColor)
+    drawSierpinski(currentValue.get(), triangleColor)
 
 def sliderChange(event):
-    draw_sierpinski(currentValue.get())
+    triangleColor = str(colorEntry.get())
+    drawSierpinski(currentValue.get(), triangleColor)
     
 
 def midpoint(p1, p2):
@@ -39,14 +44,15 @@ def sierpinski(A, B, C, depth):
 
 
 
-def draw_sierpinski(depth):
+def drawSierpinski(depth, color='white'):
+
     l = 300
 
     A, B, C = (0, 275), (l/2, 0), (l, 275)
 
     graphCanvas.delete('all')
-    
-    graphCanvas.create_polygon([A, B, C], fill = 'red')
+    print("drawSierpinski" + color)
+    graphCanvas.create_polygon([A, B, C], fill = color)
     graphCanvas.pack()
 
     sierpinski(A, B, C, depth)
@@ -54,7 +60,7 @@ def draw_sierpinski(depth):
 def toggle():
     
     #print(toggle_button.config('text'))
-    # ('text', 'text', 'Text', '', 'Srpski')
+    #('text', 'text', 'Text', '', 'Srpski')
     
     if toggle_button.config('text')[-1] == 'English':
         toggle_button.config(text='Srpski')
@@ -62,7 +68,7 @@ def toggle():
 
     else:
         toggle_button.config(text='English')
-        about.config(text='Троугао Сјерпињског је фрактал у облику једнакостраничног троугла, подељен рекурзивно у мање једнакостраничне троуглове.')
+        about.config(text='Trougao Sjerpinjskog je fraktal u obliku jednakostraničnog trougla, podeljen rekurzivno u manje jednakostranične trouglove.')
 
 
 
@@ -72,7 +78,6 @@ if __name__ == "__main__":
     root.geometry("500x300")
     root.title("Sierpinski Triangle")
     root.resizable(False, False)
-
 
     graphFrame = tk.LabelFrame(root, text='Sierpinski Triangle')
     graphFrame.place(x=0, y=0)
@@ -89,7 +94,7 @@ if __name__ == "__main__":
     about = tk.Label(aboutFrame, wraplength=190, justify=LEFT, text='The Sierpiński triangle is a fractal\nwith the overall shape of an equilateral triangle, subdivided recursively into smaller equilateral triangles.')
     about.pack()
 
-    draw_sierpinski(0)
+    drawSierpinski(0)
 
     settingsFrame = tk.LabelFrame(root, text= 'Settings', width=190, height=150)
     settingsFrame.place(x=310, y=100)
@@ -101,7 +106,7 @@ if __name__ == "__main__":
     colorEntry.place(x=45, y=2)
     
     colorButton = ttk.Button(settingsFrame, width= 7,text='Submit', command = colorChange)
-    colorButton.place(x=105, y=-1)
+    colorButton.place(x=110, y=-1)
  
     sliderText = Message(settingsFrame, text='Depth:')
     sliderText.place(x=0, y=45)
