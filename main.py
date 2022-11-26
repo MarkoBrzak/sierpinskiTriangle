@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import *
+from tkinter import ttk
 
 def get_current_value():
     return current_value.get()
@@ -37,7 +38,22 @@ def draw_sierpinski(depth):
 
     sierpinski(A, B, C, depth)
 
+def toggle():
+    
+    if toggle_button.config('text')[-1] == 'E':
+        toggle_button.config(text='S')
+        textFrame = tk.LabelFrame(root, text='About')
+        textFrame.place(x=310, y=200)
 
+        text = tk.Label(textFrame, wraplength=200, justify=LEFT, text='The Sierpiński triangle is a fractal\nwith the overall shape of an equilateral triangle, subdivided recursively into smaller equilateral triangles.')
+        text.pack()
+    else:
+        toggle_button.config(text='E')
+        textFrame = tk.LabelFrame(root, text='About')
+        textFrame.place(x=310, y=200)
+
+        text = tk.Label(textFrame, wraplength=190, justify=LEFT, text='Троугао Сјерпињског је фрактал са обликом једнакостраничног троугла, подељен рекурзивно у мање једнакостраничне троуглове.')
+        text.pack()
 
 
 if __name__ == "__main__":
@@ -50,15 +66,18 @@ if __name__ == "__main__":
     graphFrame = tk.LabelFrame(root, text='Sierpinski Triangle')
     graphFrame.place(x=0, y=0)
 
-    textFrame = tk.LabelFrame(root, text='About')
-    textFrame.place(x=310, y=50)
-
-    text = tk.Label(textFrame, wraplength=200, justify=LEFT, text='The Sierpiński triangle is a fractal\nwith the overall shape of an equilateral triangle, subdivided recursively into smaller equilateral triangles.')
-    text.pack()
-
     graphCanvas = Canvas(graphFrame, width=300, height=300)
 
     current_value = tk.IntVar()
+
+    toggle_button = ttk.Button(text="S", width=1, command=toggle)
+    toggle_button.place(x=483, y=1)
+
+    textFrame = tk.LabelFrame(root, text='About')
+    textFrame.place(x=310, y=200)
+
+    text = tk.Label(textFrame, wraplength=200, justify=LEFT, text='The Sierpiński triangle is a fractal\nwith the overall shape of an equilateral triangle, subdivided recursively into smaller equilateral triangles.')
+    text.pack()
 
     draw_sierpinski(0)
 
