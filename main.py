@@ -1,16 +1,5 @@
 import tkinter as tk
 from tkinter import *
-from tkinter import ttk
-import tkinter.messagebox
-
-
-    # MessageBox for Exit dialogue.
-def ex():
-    answer = tk.messagebox.askquestion('Exit', 'Do you wish to exit the program?')
-    if answer == 'yes':
-        exit()
-    else:
-        return
 
     # slider Method which changes the depth/"density" of triangles
 def sliderChange(event):
