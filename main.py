@@ -12,14 +12,6 @@ def ex():
     else:
         return
 
-    # button method that changes the color
-def colorChange():
-    global triangleColor
-    # gets color from entry box
-    triangleColor = str(colorEntry.get())
-    # draws new triangles after the color (global variable) is changed
-    drawSierpinski(sliderValue.get())
-
     # slider Method which changes the depth/"density" of triangles
 def sliderChange(event):
     # triangleColor = str(colorEntry.get())
@@ -66,85 +58,34 @@ def drawSierpinski(depth):
 
     sierpinski(A, B, C, depth)
 
-    # language changer
-def toggle():
-    
-    # print(languageButton.config('text'))
-    # ('text', 'text', 'Text', '', 'Srpski')
-    if languageButton.config('text')[-1] == 'English':
-        # changes button text
-        languageButton.config(text='Srpski')
-        # changes about content
-        about.config(text='The Sierpiński triangle is a fractal with the overall shape of an equilateral triangle, subdivided recursively into smaller equilateral triangles.')
-
-    else:
-        # changes button text
-        languageButton.config(text='English')
-        # changes about content
-        about.config(text='Trougao Sjerpinjskog je fraktal u obliku jednakostraničnog trougla, podeljen rekurzivno u manje jednakostranične trouglove.')
-
 
 
 if __name__ == "__main__":
     # root window settings
     root = tk.Tk()
-    root.geometry("500x300")
+    root.geometry("305x330")
     root.title("Sierpinski Triangle")
     root.resizable(False, False)
 
     # frame for the canvas
-    graphFrame = tk.LabelFrame(root, text='Sierpinski Triangle')
+    graphFrame = tk.LabelFrame(root)
     graphFrame.place(x=0, y=0)
 
     graphCanvas = Canvas(graphFrame, width=300, height=275)
 
-    # frame for about section
-    aboutFrame = tk.LabelFrame(root, text='About')
-    aboutFrame.place(x=310, y=0)
-
-    about = tk.Label(aboutFrame, wraplength=190, justify=LEFT, text='The Sierpiński triangle is a fractal\nwith the overall shape of an equilateral triangle, subdivided recursively into smaller equilateral triangles.')
-    about.pack()
-
     # original triangle color variable
     global triangleColor
-    triangleColor = 'white'
+    triangleColor = 'gray'
 
     # variables must be tk.Vars
     sliderValue = tk.IntVar()
     colorValue = tk.StringVar()
 
-    # frame for Settings 
-    settingsFrame = tk.LabelFrame(root, text= 'Settings', width=190, height=150)
-    settingsFrame.place(x=310, y=100)
     
-    # Color section
-    colorText = Message(settingsFrame, text='Color:')
-    colorText.place(x =0, y=0)
+    slider = Scale(root, from_=0, to=7, length=100, sliderlength=20, troughcolor='gray', width=15, orient = HORIZONTAL, command=sliderChange, variable=sliderValue)
+    slider.place(x=100, y=285)
 
-    colorEntry = Entry(settingsFrame, width=10)
-    colorEntry.place(x=45, y=2)
-    
-    colorButton = ttk.Button(settingsFrame, width= 7,text='Submit', command = colorChange)
-    colorButton.place(x=110, y=-1)
- 
-    # Depth section
-    sliderText = Message(settingsFrame, text='Depth:')
-    sliderText.place(x=0, y=45)
 
-    slider = Scale(settingsFrame, from_=0, to=6, length=100, sliderlength=20, troughcolor='gray', width=15, orient = HORIZONTAL, command=sliderChange, variable=sliderValue)
-    slider.place(x=45, y=27)
-
-    # Language section
-    languageText = Message(settingsFrame, text='Language:', width=60)
-    languageText.place(x=0, y=90)
-
-    languageButton = ttk.Button(settingsFrame, text="Srpski", width=10, command=toggle)
-    languageButton.place(x=70, y=90)
-
-    # Exit section
-    exitButton = ttk.Button(root, text='Exit', command = ex)
-    exitButton.place(x=370, y=265)
-    
     # starting method
     drawSierpinski(0)
 
