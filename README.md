@@ -1,1 +1,1 @@
-# sierpinskiTriangle
+# sierpinski-triangle
